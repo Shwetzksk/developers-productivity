@@ -15,7 +15,7 @@ type Total = {
 export default async function getTotalActivity() {
   const data = await fetchData();
   const colors = await getActivityMeta();
-  console.log(data);
+
   const total: Total = {};
 
   data.rows.forEach((row) => {
@@ -38,6 +38,7 @@ export default async function getTotalActivity() {
       }
     });
   });
+
   console.log(total);
   return total;
 }

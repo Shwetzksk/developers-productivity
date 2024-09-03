@@ -9,6 +9,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { ChartData } from "./type.ts";
 
 ChartJS.register(
   CategoryScale,
@@ -20,8 +21,24 @@ ChartJS.register(
 );
 
 const options = {
-  plugins: {},
   responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: "bottom",
+      labels: {
+        boxWidth: 10,
+        boxHeight: 4,
+      },
+    },
+    tooltip: {
+      boxWidth: 10,
+      boxHeight: 4,
+      interaction: {
+        mode: "index",
+      },
+    },
+  },
   scales: {
     x: {
       stacked: true,
@@ -32,29 +49,6 @@ const options = {
   },
 };
 
-const labels = ["January", "February", "March", "April", "May", "June", "July"];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: labels.map(() => Math.floor(Math.random() * 200)),
-      backgroundColor: "rgb(255, 99, 132)",
-    },
-    {
-      label: "Dataset 2",
-      data: labels.map(() => Math.floor(Math.random() * 200)),
-      backgroundColor: "rgb(75, 192, 192)",
-    },
-    {
-      label: "Dataset 3",
-      data: labels.map(() => Math.floor(Math.random() * 200)),
-      backgroundColor: "rgb(53, 162, 235)",
-    },
-  ],
-};
-
-export default function StackedBar() {
+export default function StackedBar({ data }: { data: ChartData }) {
   return <Bar options={options} data={data} />;
 }

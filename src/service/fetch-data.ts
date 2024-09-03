@@ -26,5 +26,6 @@ interface ApiData {
 export default async function fetchData(): Promise<AuthorWorklog> {
   const res = await fetch("data.json");
   const data = (await res.json()) as ApiData;
+  console.log(data);
   return data.data.AuthorWorklog;
 }

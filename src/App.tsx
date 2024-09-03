@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import PieChart, { ChartData } from "@/components/pie-chart";
+import PieChart from "@/components/pie-chart";
+import { ChartData } from "@/components/type";
 import getTotalActivity from "@/service/get-total-activity";
 import styled from "styled-components";
 import { usersColor } from "@/config/activity";
 import StackedBar from "@/components/stacked-bar-chart";
+import getActivityMeta from "@/service/get-activity-meta";
+import getTeam from "@/service/get-team";
+import hexToRgba from "hex-to-rgba";
 
 function App() {
   const [totalActivity, setTotalActivity] = useState<
     { heading: string; total: number; data: ChartData }[]
   >([]);
-  const [dayWiseActivity, setDayWiseActivity] = useState([]);
+  const [individualActivity, setIndividualActivity] = useState<ChartData>({
+    labels: [],
+    datasets: [],
+  });
 
   async function fetchTotalActivity() {
     const res = await getTotalActivity();
-    const data = Object.entries(res).map((activity) => {
+    const activityMeta = await getActivityMeta();
+    const teams = await getTeam();
+    const totalActivity = Object.entries(res).map((activity) => {
       const [heading, stats] = activity;
       return {
         heading,
@@ -31,7 +40,22 @@ function App() {
         },
       };
     });
-    setTotalActivity(data);
+    console.log(teams, activityMeta);
+    const individual = {
+      labels: teams,
+      datasets: Object.entries(res).map((activity) => {
+        const [key, value] = activity;
+
+        return {
+          label: key,
+          data: value.contributors.map((data) => data.value),
+          backgroundColor: activityMeta[key],
+        };
+      }),
+    };
+    setTotalActivity(totalActivity);
+    setIndividualActivity(individual);
+    console.log("stacked", individual);
   }
   useEffect(() => {
     fetchTotalActivity();
@@ -70,7 +94,10 @@ function App() {
           </Card>
         ))}
       </Stats>
-      <StackedBar />
+
+      <StackbarContainer>
+        <StackedBar data={individualActivity} />
+      </StackbarContainer>
     </Container>
   );
 }
@@ -127,4 +154,9 @@ const Card = styled.div`
     width: 95px;
     margin-left: auto;
   }
+`;
+const StackbarContainer = styled.section`
+  display: flex;
+  height: calc(100vh - 300px);
+  width: 100%;
 `;

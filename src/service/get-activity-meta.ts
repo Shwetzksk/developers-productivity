@@ -10,7 +10,6 @@ export default async function getTotalActivity() {
     acc[cur.label] = cur.fillColor;
     return acc;
   }, {});
-  console.log(colors);
 
   return colors;
 }
