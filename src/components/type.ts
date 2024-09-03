@@ -3,6 +3,6 @@ export interface ChartData {
   datasets: Array<{
     label: string;
     data: string[];
-    backgroundColors: string[];
+    backgroundColor: string[] | string;
   }>;
 }

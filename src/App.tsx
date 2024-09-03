@@ -8,7 +8,6 @@ import { usersColor } from "@/config/activity";
 import StackedBar from "@/components/stacked-bar-chart";
 import getActivityMeta from "@/service/get-activity-meta";
 import getTeam from "@/service/get-team";
-import hexToRgba from "hex-to-rgba";
 
 function App() {
   const [totalActivity, setTotalActivity] = useState<
@@ -55,7 +54,6 @@ function App() {
     };
     setTotalActivity(totalActivity);
     setIndividualActivity(individual);
-    console.log("stacked", individual);
   }
   useEffect(() => {
     fetchTotalActivity();

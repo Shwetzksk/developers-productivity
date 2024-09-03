@@ -25,7 +25,6 @@ const options = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "bottom",
       labels: {
         boxWidth: 10,
         boxHeight: 4,
